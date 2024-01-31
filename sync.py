@@ -1,21 +1,24 @@
 import requests
 from pprint import pprint
-from fields import fields, filds_to_dive_in
-def get_person(person_id, *fields):
-    response = requests.get(f'https://swapi.dev/api/people/{person_id}/').json()
+from input_data import resource_url, fields, fields_to_dive_in
+
+
+def get_resource(parameter) -> dict:
+    response = requests.get(f'{resource_url}/{parameter}/').json()
     result = {field: response[field] for field in fields}
-    links = {field: result[field] for field in filds_to_dive_in}
-    return result, links
+    return result
 
 
-# def get_pers_atr(id, *atr):
-#     person = get_person(id)
-#     links = {field: person[field] for field in filds_to_dive_in}
-#     return links
+def get_attributes(id, *atributes):
+    person = get_resource(id)
+    links = {atribute: person[atribute] for atribute in atributes}
+    return links
 
 
 def main():
-    return get_person(1, *fields)
+    # return pprint(get_person(1, *fields))
+    return pprint(get_attributes(1, *fields_to_dive_in))
+    # return fields_to()
 
 if __name__ == "__main__":
-    pprint(main())
+    main()

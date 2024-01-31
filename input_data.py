@@ -1,3 +1,6 @@
+resource_url = "https://swapi.dev/api/people"
+
+
 fields = [
     "birth_year",
     "eye_color",
@@ -14,7 +17,7 @@ fields = [
     "vehicles"
 ]
 
-filds_to_dive_in = [
+fields_to_dive_in = [
     # "id",
     "films",
     "species",
