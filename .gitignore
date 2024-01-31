@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+.idea/
+env/
+.env
+ex_te.py
+example.txt
