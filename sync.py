@@ -26,4 +26,4 @@ def construct_person(resource_url, *attributes):
 
 if __name__ == "__main__":
     person = get_resource(resource_url, *attributes_to_get)
-    pprint([requests.get(f'{film}').json()["title"] for film in person["films"]])
+    pprint(",".join([requests.get(f'{film}').json()["title"] for film in person["films"]]))
