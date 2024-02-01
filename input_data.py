@@ -1,4 +1,4 @@
-resource_url = "https://swapi.dev/api/people"
+resource_url = "https://swapi.dev/api/people/1"
 
 
 fields = [
@@ -17,7 +17,7 @@ fields = [
     "vehicles"
 ]
 
-fields_to_dive_in = [
+attributes_to_get = [
     # "id",
     "films",
     "species",

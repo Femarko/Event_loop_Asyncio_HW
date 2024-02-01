@@ -1,24 +1,29 @@
 import requests
 from pprint import pprint
-from input_data import resource_url, fields, fields_to_dive_in
+from input_data import resource_url, fields, attributes_to_get
 
 
-def get_resource(parameter) -> dict:
-    response = requests.get(f'{resource_url}/{parameter}/').json()
-    result = {field: response[field] for field in fields}
-    return result
+def get_resource(resource_url, *attributes_to_get) -> dict:
+    response = requests.get(f'{resource_url}').json()
+    person = {field: response[field] for field in fields}
+    # attributes_to_get = {atribute: person[atribute] for atribute in attributes_to_get}
+    # return {"person": person, "attributes_to_get": attributes_to_get}
+    # str_attributes = {attribute: [requests.get(f'{item}').json()["title"] for item in attribute] for attribute in attributes_to_get}
+    # str_attributes = {attribute: requests.get(person[attribute]) for attribute in attributes_to_get}
+    # return [person, str_attributes]
+    return person
+
+def get_attributes(resource_url, *attributes) -> dict:
+    person = get_resource(resource_url, *attributes)
+    # attr_dict =
+    # return attr_dict
 
 
-def get_attributes(id, *atributes):
-    person = get_resource(id)
-    links = {atribute: person[atribute] for atribute in atributes}
-    return links
+def construct_person(resource_url, *attributes):
+    attr_dict = get_attributes(resource_url, *fields_to_dive_in)
+    str_attributes = {field: get_resource(attr_dict[field])["name"] for field in fields_to_dive_in}
 
-
-def main():
-    # return pprint(get_person(1, *fields))
-    return pprint(get_attributes(1, *fields_to_dive_in))
-    # return fields_to()
 
 if __name__ == "__main__":
-    main()
+    person = get_resource(resource_url, *attributes_to_get)
+    pprint([requests.get(f'{film}').json()["title"] for film in person["films"]])
