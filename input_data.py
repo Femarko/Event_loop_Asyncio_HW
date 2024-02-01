@@ -17,10 +17,10 @@ fields = [
     "vehicles"
 ]
 
-attributes_to_get = [
+attributes_to_get = {
     # "id",
-    "films",
-    "species",
-    "starships",
-    "vehicles"
-]
+    "films": "title",
+    "species": "name",
+    "starships": "name",
+    "vehicles": "name"
+}
