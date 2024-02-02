@@ -1,4 +1,5 @@
-resource_url = "https://swapi.dev/api/people/1"
+persons_list = "https://swapi.dev/api/people/"
+person_url = "https://swapi.dev/api/people/0"
 
 
 fields = [
@@ -18,7 +19,6 @@ fields = [
 ]
 
 attributes_to_get = {
-    # "id",
     "films": "title",
     "species": "name",
     "starships": "name",
