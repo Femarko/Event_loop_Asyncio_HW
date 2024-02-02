@@ -1,5 +1,5 @@
 persons_list = "https://swapi.dev/api/people/"
-person_url = "https://swapi.dev/api/people/0"
+person_url = "https://swapi.dev/api/people/1"
 
 
 fields = [
