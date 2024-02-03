@@ -15,7 +15,7 @@ def get_while(resource_url: str, first_id=82, **attributes_to_get: dict) -> list
     response = requests.get(f'{resource_url}/{person_id}')
     status_code = response.status_code
     result_list = []
-    while status_code == 200:
+    while status_code == 200: # TODO: условие - пока общее количество со статусом 200 не сравняется с persons_count
         person = {field: response.json()[field] for field in fields}
         for key, value in attributes_to_get.items():
             str_attrs = {key: ",".join([requests.get(f'{item}').json()[value] for item in person[key]])}

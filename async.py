@@ -21,7 +21,7 @@ def persons_count(base_url: str) -> int:
 async def main(base_url: str, first_id: int, session: ClientSession) -> dict:
     status_code = get_person().status_code
     if status_code == 200:
-        while status_code == 200:
+        while status_code == 200: # TODO: условие - пока общее количество со статусом 200 не сравняется с persons_count
             last_id = first_id + 11
             coros = [get_person(people_id, session) for people_id in range(first_id, last_id)]
 
