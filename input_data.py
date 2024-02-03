@@ -1,4 +1,4 @@
-persons_list = "https://swapi.dev/api/people/"
+base_url = "https://swapi.dev/api/people/"
 person_url = "https://swapi.dev/api/people/1"
 
 
