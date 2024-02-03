@@ -2,6 +2,12 @@ import requests
 from pprint import pprint
 from input_data import person_url, fields, attributes_to_get, base_url
 
+
+def quantity(base_url: str) -> int:
+    persons_quantity = requests.get(f"{base_url}").json().get("count")
+    return persons_quantity
+
+
 def persons_count(resource_url: str) -> int:
     response = requests.get(f'{resource_url}').json().get("count")
     return response
@@ -52,4 +58,5 @@ if __name__ == "__main__":
     # print(requests.get(f'{person_url}').status_code)
     # pprint(get_while(base_url, **attributes_to_get))
     # pprint(persons_count(base_url))
-    pprint(all_statuses(base_url))
+    # pprint(all_statuses(base_url))
+    print(quantity(base_url))

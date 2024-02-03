@@ -2,15 +2,21 @@ import asyncio, aiohttp, requests
 from aiohttp import ClientSession
 from more_itertools import chunked
 from input_data import base_url
+from pprint import pprint
 
 
 CHUNK_SIZE = 10
 
 
-async def get_person(base_url: str, first_id: int, session: ClientSession) -> ClientSession.get():
-    persons_quantity = await session.get(f"{base_url}".json().get("count"))
-    response = await session.get(f"{base_url}/{first_id}")
-    return response
+async def quantity(base_url: str, session: ClientSession) -> int:
+    response = await session.get(f"{base_url}")
+    result = await response.json().get("name")
+    return result
+
+
+# async def get_person(base_url: str, first_id: int, session: ClientSession) -> ClientSession.get():
+#     response = await session.get(f"{base_url}/{first_id}")
+#     return [persons_quantity, response]
 
 
 def persons_count(base_url: str) -> int:
@@ -54,3 +60,13 @@ def get_while(resource_url: str, first_id=82, **attributes_to_get: dict) -> list
         response = requests.get(f'{resource_url}/{person_id}')
         status_code = response.status_code
     return result_list
+
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        return await session.get(f"{base_url}").json()
+        # return response.json().get("name")
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
