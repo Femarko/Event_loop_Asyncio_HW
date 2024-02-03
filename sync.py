@@ -18,7 +18,7 @@ def get_while(resource_url: str, first_id=82, **attributes_to_get: dict) -> list
     while status_code == 200: # TODO: условие - пока общее количество со статусом 200 не сравняется с persons_count
         person = {field: response.json()[field] for field in fields}
         for key, value in attributes_to_get.items():
-            str_attrs = {key: ",".join([requests.get(f'{item}').json()[value] for item in person[key]])}
+            str_attrs = {key: ",".join([requests.get(f'{item}').json()[value] for item in person[key]])} # todo: этот словарь - лишний?
             for key, value in str_attrs.items():
                 person[key] = value
             person["id"] = person_id
