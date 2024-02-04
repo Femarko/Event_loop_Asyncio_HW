@@ -21,7 +21,8 @@ async def get_persons(base_url: str, session: ClientSession) -> dict:
     persons_quantity = await quantity(base_url, session)
     coro_list = [session.get(f"{base_url}/{person_id}") for person_id in range(1, persons_quantity + 1)]
     response_list = await asyncio.gather(*coro_list)
-    return response_list
+    persons_list = [await item.json() for item in response_list if item.status == 200]
+    return len(response_list)
 
 
 
@@ -30,4 +31,4 @@ async def main():
         return await get_persons(base_url, session)
 
 if __name__ == '__main__':
-    print(asyncio.run(main()))
+    pprint(asyncio.run(main()))
