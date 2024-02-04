@@ -11,19 +11,10 @@ if platform.system()=='Windows':
 CHUNK_SIZE = 10
 
 
-async def lector(person_id, session):
-    response = await session.get(f'https://swapi.py4e.com/api/people/{person_id}/')
-    json = await response.json()
-    return json
-
-
-async def quantity(base_url: str) -> int:
-    session = ClientSession()
+async def quantity(base_url: str, session: ClientSession) -> int:
     response = await session.get(f"{base_url}")
     json = await response.json()
-    await session.close()
-    result = json.get("count")
-    pprint(result)
+    return json.get("count")
 
 
 
@@ -78,8 +69,7 @@ def get_while(resource_url: str, first_id=82, **attributes_to_get: dict) -> list
 
 async def main():
     async with ClientSession() as session:
-        res = await lector(1, session)
-        print(res)
+        return await quantity(base_url, session)
 
 if __name__ == '__main__':
-    asyncio.run(quantity(base_url))
+    print(asyncio.run(main()))
