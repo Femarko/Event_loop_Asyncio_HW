@@ -31,4 +31,6 @@ async def main():
         return await get_persons(base_url, session)
 
 if __name__ == '__main__':
-    pprint(asyncio.run(main()))
+    pers_d = asyncio.run(main())
+    for key in pers_d.keys():
+        print(str(key).split("//"))
