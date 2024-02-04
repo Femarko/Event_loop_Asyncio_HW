@@ -22,7 +22,7 @@ async def get_persons(base_url: str, session: ClientSession) -> dict:
     coro_list = [session.get(f"{base_url}/{person_id}") for person_id in range(1, persons_quantity + 1)]
     response_list = await asyncio.gather(*coro_list)
     persons_list = [await item.json() for item in response_list if item.status == 200]
-    return len(response_list)
+    return {"response_list": len(response_list), "persons_list": len(persons_list)}
 
 
 
