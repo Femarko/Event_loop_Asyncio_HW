@@ -5,3 +5,4 @@ env/
 .env
 ex_te.py
 example.txt
+lectors_async.py
