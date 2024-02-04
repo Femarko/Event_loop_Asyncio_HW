@@ -3,6 +3,9 @@ from aiohttp import ClientSession
 from more_itertools import chunked
 from input_data import base_url
 from pprint import pprint
+import platform
+if platform.system()=='Windows':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 CHUNK_SIZE = 10
@@ -21,6 +24,8 @@ async def quantity(base_url: str) -> int:
     await session.close()
     result = json.get("count")
     pprint(result)
+
+
 
 
 # async def get_person(base_url: str, first_id: int, session: ClientSession) -> ClientSession.get():
@@ -78,4 +83,3 @@ async def main():
 
 if __name__ == '__main__':
     asyncio.run(quantity(base_url))
-    print('шозахрень?')
