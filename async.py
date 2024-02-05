@@ -1,7 +1,7 @@
 import asyncio, aiohttp, requests
 from aiohttp import ClientSession
 from more_itertools import chunked
-from input_data import base_url
+from input_data import base_url, attributes_to_get
 from pprint import pprint
 import platform
 if platform.system()=='Windows':
@@ -47,8 +47,11 @@ async def add_persons(
         return persons_list
 
 
-async def get_attributes():
-    pass
+async def get_attributes(base_url: str, persons_list: list, session: ClientSession):
+    for item in persons_list:
+        for key, value in attributes_to_get:
+            for attr_url in item[key]:
+                item[key] = ",".join([session.get(f'{attr_url}').json()[value]
 
 
 async def main():
