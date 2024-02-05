@@ -17,15 +17,18 @@ async def persons_quantity(base_url: str, session: ClientSession) -> int:
     return json.get("count")
 
 
-async def get_persons(base_url: str, session: ClientSession, first_id: int=1, last_id: int=None) -> dict:
+async def get_persons(base_url: str, session: ClientSession, first_id: int=1, last_id: int=None) -> list:
     if not last_id:
         last_id = await persons_quantity(base_url, session)
     coro_list = [session.get(f"{base_url}/{person_id}") for person_id in range(first_id, last_id + 1)]
     response_list = await asyncio.gather(*coro_list)
-    persons_dict = {
-        int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200
-    }
-    return persons_dict
+    # persons_dict = {
+    #     int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200
+    # }
+    persons_list = [
+        await item.json() | {"id": int(str(item.url).split("//")[2])} for item in response_list if item.status == 200
+    ]
+    return persons_list
 
 
 async def add_persons(
@@ -44,13 +47,22 @@ async def add_persons(
         return persons_dict
 
 
+async def get_attributes():
+    pass
+
+
+# async def main():
+#     async with ClientSession() as session:
+#         persons_quantiy = await persons_quantity(base_url, session)
+#         persons_dict = await get_persons(base_url, session)
+#         if len(persons_dict.keys()) < persons_quantiy:
+#             persons_dict = await add_persons(base_url, persons_quantiy, persons_dict, session)
+#         return persons_dict
+
 async def main():
     async with ClientSession() as session:
-        persons_quantiy = await persons_quantity(base_url, session)
-        persons_dict = await get_persons(base_url, session)
-        if len(persons_dict.keys()) < persons_quantiy:
-            persons_dict = await add_persons(base_url, persons_quantiy, persons_dict, session)
-        return persons_dict
+        return await get_persons(base_url, session)
+
 
 if __name__ == '__main__':
     pprint(asyncio.run(main()))
