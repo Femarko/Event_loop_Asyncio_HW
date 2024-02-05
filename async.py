@@ -34,34 +34,34 @@ async def get_persons(base_url: str, session: ClientSession, first_id: int=1, la
 async def add_persons(
         base_url: str,
         persons_quantity: int,
-        persons_dict: dict,
+        persons_list: list,
         session: ClientSession,
         first_id: int=1,
         last_id: int=None
 ) -> dict:
-        first_id = max(persons_dict.keys()) + 1
+        first_id = persons_list[-1]["id"] + 1
         last_id = first_id + 1
-        while len(persons_dict.keys()) < persons_quantity:
+        while len(persons_list) < persons_quantity:
             new_person = await get_persons(base_url, session, first_id=first_id, last_id=last_id)
-            persons_dict = persons_dict | new_person
-        return persons_dict
+            persons_list.append(new_person)
+        return persons_list
 
 
 async def get_attributes():
     pass
 
 
-# async def main():
-#     async with ClientSession() as session:
-#         persons_quantiy = await persons_quantity(base_url, session)
-#         persons_dict = await get_persons(base_url, session)
-#         if len(persons_dict.keys()) < persons_quantiy:
-#             persons_dict = await add_persons(base_url, persons_quantiy, persons_dict, session)
-#         return persons_dict
-
 async def main():
     async with ClientSession() as session:
-        return await get_persons(base_url, session)
+        persons_quantiy = await persons_quantity(base_url, session)
+        persons_list = await get_persons(base_url, session)
+        if len(persons_list) < persons_quantiy:
+            persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
+        return persons_list
+
+# async def main():
+#     async with ClientSession() as session:
+#         return await get_persons(base_url, session)
 
 
 if __name__ == '__main__':
