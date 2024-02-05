@@ -21,10 +21,15 @@ async def get_persons(base_url: str, session: ClientSession) -> dict:
     persons_quantity = await quantity(base_url, session)
     coro_list = [session.get(f"{base_url}/{person_id}") for person_id in range(1, persons_quantity + 1)]
     response_list = await asyncio.gather(*coro_list)
-    persons_dict = {int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200}
-
+    persons_dict = {
+        int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200
+    }
     return persons_dict
 
+
+async def check_quantity(quantity: str, session: ClientSession):
+    if get_persons():
+        pass
 
 
 async def main():
