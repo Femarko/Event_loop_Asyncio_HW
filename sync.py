@@ -51,12 +51,12 @@ def get_resource(resource_url, **attributes_to_get) -> dict:
 
 
 if __name__ == "__main__":
-    # pprint(get_resource(person_url, **attributes_to_get))
+    pprint(get_resource(person_url, **attributes_to_get))
     # for item in get_persons_list(person_url):
     #     print(item["name"])
     # pprint(get_persons_list(base_url))
     # print(requests.get(f'{person_url}').status_code)
-    pprint(get_while(base_url, **attributes_to_get))
+    # pprint(get_while(base_url, **attributes_to_get))
     # pprint(persons_count(base_url))
     # pprint(all_statuses(base_url))
     # print(quantity(base_url))

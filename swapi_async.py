@@ -27,6 +27,8 @@ async def get_persons(base_url: str, persons_quantity, session: ClientSession, f
     # persons_dict = {
     #     int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200
     # }
+    persons_list = [await item.json()]
+
     persons_list = [
         await item.json() | {"id": int(str(item.url).split("//")[2])} for item in response_list if item.status == 200
     ]
@@ -49,26 +51,29 @@ async def add_persons(
         return persons_list
 
 
-async def get_attributes(base_url: str, persons_list: list, session: ClientSession=None):
-    atrr_dict = dict.fromkeys(attributes_to_get.keys())
-    return {str(type(item)): item for item in persons_list}
+async def get_attributes(base_url: str, persons_list: list, session: ClientSession=None) -> dict:
+    atrr_dict = {}
+    for key, value in attributes_to_get.keys():
+        links_dict = {item["id"]: {key: item[key]} for item in persons_list}
+        atrr_dict = atrr_dict | links_dict
+    return atrr_dict
 
 
+# async def main():
+#     async with ClientSession() as session:
+#         persons_quantiy = await persons_quantity(base_url, session)
+#         persons_list = await get_persons(base_url, persons_quantiy, session)
+#         if len(persons_list) < persons_quantiy:
+#             persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
+#
+#         print(f"{type(item) = }")
 
 async def main():
     async with ClientSession() as session:
-        persons_quantiy = await persons_quantity(base_url, session)
-        persons_list = await get_persons(base_url, persons_quantiy, session)
-        if len(persons_list) < persons_quantiy:
-            persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
-    for item in persons_list:
-        print(f"{type(item) = }")
-# async def main():
-#     async with ClientSession() as session:
-#         return await get_persons(base_url, session)
+        return await persons_quantity(base_url, session)
 
 
 if __name__ == '__main__':
     start_time = datetime.now()
-    asyncio.run(main())
+    print(asyncio.run(main()))
     print(datetime.now() - start_time)
