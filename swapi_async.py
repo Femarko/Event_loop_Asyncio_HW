@@ -13,10 +13,10 @@ if platform.system()=='Windows':
 CHUNK_SIZE = 10
 
 
-async def persons_quantity(base_url: str, session: ClientSession) -> int:
+async def get_field_value(base_url: str, field: str, session: ClientSession) -> int:
     response = await session.get(f"{base_url}")
     json = await response.json()
-    return json.get("count")
+    return json.get(field)
 
 
 async def get_persons(base_url: str, persons_quantity, session: ClientSession, first_id: int=1, last_id: int=None) -> list:
@@ -61,16 +61,15 @@ async def get_attributes(base_url: str, persons_list: list, session: ClientSessi
 
 # async def main():
 #     async with ClientSession() as session:
-#         persons_quantiy = await persons_quantity(base_url, session)
+#         persons_quantiy = await get_field_value(base_url, "count", session)
 #         persons_list = await get_persons(base_url, persons_quantiy, session)
 #         if len(persons_list) < persons_quantiy:
 #             persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
-#
-#         print(f"{type(item) = }")
+#         pprint(persons_list)
 
 async def main():
     async with ClientSession() as session:
-        return await persons_quantity(base_url, session)
+        return await get_field_value(base_url, "count", session)
 
 
 if __name__ == '__main__':
