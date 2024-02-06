@@ -26,8 +26,9 @@ async def get_persons(base_url: str, persons_quantity, session: ClientSession, f
     response_list = await asyncio.gather(*coro_list)
     persons_list = []
     for item in response_list:
-        person_dict = {field: (await item.json())[field] for field in fields if item.status == 200}
-        persons_list.append(person_dict | {"id": int(str(item.url).split("//")[2])})
+        if item.status == 200:
+            person_dict = {field: (await item.json())[field] for field in fields}
+            persons_list.append(person_dict | {"id": int(str(item.url).split("//")[2])})
     return persons_list
 
 
