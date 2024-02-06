@@ -48,12 +48,11 @@ async def add_persons(
         return persons_list
 
 
-async def get_attributes(base_url: str, persons_list: list, session: ClientSession=None) -> dict:
-    atrr_dict = {}
-    for key, value in attributes_to_get.keys():
-        links_dict = {item["id"]: {key: item[key]} for item in persons_list}
-        atrr_dict = atrr_dict | links_dict
-    return atrr_dict
+async def get_attributes(base_url: str, persons_list: list, session: ClientSession=None) -> list:
+    for item in persons_list:
+        for key, value in attributes_to_get.items():
+            item[key] = ",".join([await get_field_value(link, value, session) for link in item[key]])
+    return persons_list
 
 
 async def main():
@@ -62,7 +61,8 @@ async def main():
         persons_list = await get_persons(base_url, persons_quantiy, session)
         if len(persons_list) < persons_quantiy:
             persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
-        pprint(persons_list)
+        attr_list = await get_attributes(base_url, persons_list, session)
+        pprint(attr_list)
 
 # async def main():
 #     async with ClientSession() as session:
