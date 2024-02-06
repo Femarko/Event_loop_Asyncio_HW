@@ -1,9 +1,9 @@
 import asyncio, aiohttp, requests
 from datetime import datetime
-
+from urllib import parse
 from aiohttp import ClientSession
 from more_itertools import chunked
-from input_data import base_url, attributes_to_get
+from input_data import base_url, attributes_to_get, fields
 from pprint import pprint
 import platform
 if platform.system()=='Windows':
@@ -24,14 +24,10 @@ async def get_persons(base_url: str, persons_quantity, session: ClientSession, f
         last_id = persons_quantity
     coro_list = [session.get(f"{base_url}/{person_id}") for person_id in range(first_id, last_id + 1)]
     response_list = await asyncio.gather(*coro_list)
-    # persons_dict = {
-    #     int(str(item.url).split("//")[2]): await item.json() for item in response_list if item.status == 200
-    # }
-    persons_list = [await item.json()]
-
-    persons_list = [
-        await item.json() | {"id": int(str(item.url).split("//")[2])} for item in response_list if item.status == 200
-    ]
+    persons_list = []
+    for item in response_list:
+        person_dict = {field: (await item.json())[field] for field in fields if item.status == 200}
+        persons_list.append(person_dict | {"id": int(str(item.url).split("//")[2])})
     return persons_list
 
 
@@ -59,20 +55,20 @@ async def get_attributes(base_url: str, persons_list: list, session: ClientSessi
     return atrr_dict
 
 
-# async def main():
-#     async with ClientSession() as session:
-#         persons_quantiy = await get_field_value(base_url, "count", session)
-#         persons_list = await get_persons(base_url, persons_quantiy, session)
-#         if len(persons_list) < persons_quantiy:
-#             persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
-#         pprint(persons_list)
-
 async def main():
     async with ClientSession() as session:
-        return await get_field_value(base_url, "count", session)
+        persons_quantiy = await get_field_value(base_url, "count", session)
+        persons_list = await get_persons(base_url, persons_quantiy, session)
+        if len(persons_list) < persons_quantiy:
+            persons_list = await add_persons(base_url, persons_quantiy, persons_list, session)
+        pprint(persons_list)
+
+# async def main():
+#     async with ClientSession() as session:
+#         return await get_field_value(base_url, "count", session)
 
 
 if __name__ == '__main__':
     start_time = datetime.now()
-    print(asyncio.run(main()))
+    asyncio.run(main())
     print(datetime.now() - start_time)
