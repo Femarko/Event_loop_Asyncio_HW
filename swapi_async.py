@@ -51,7 +51,9 @@ async def add_persons(
 async def get_attributes(base_url: str, persons_list: list, session: ClientSession=None) -> list:
     for key, value in attributes_to_get.items():
         for item in persons_list:
-            item[key] = ",".join([await get_field_value(link, value, session) for link in item[key]])
+            # item[key] = ",".join([await get_field_value(link, value, session) for link in item[key]])
+            coro_list = [get_field_value(link, value, session) for link in item[key]]
+            item[key] = ",".join(await asyncio.gather(*coro_list))
     return persons_list
 
 
