@@ -1,6 +1,6 @@
 base_url = "https://swapi.dev/api/people/"
 person_url = "https://swapi.dev/api/people/1"
-
+CHUNK_SIZE = 10
 
 fields = [
     "birth_year",
