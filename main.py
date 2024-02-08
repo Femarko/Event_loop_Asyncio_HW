@@ -23,7 +23,11 @@ async def main():
             last_id = first_id + CHUNK_SIZE
             while len(persons_list) < persons_quantity:
                 persons_list = await create_persons_list(last_id, base_url, session, first_id, persons_list)
-        return persons_list
+        # return persons_list
+        asyncio.create_task(paste_to_db(*persons_list))
+
+    tasks_to_await = asyncio.all_tasks() - {asyncio.current_task()}
+    await asyncio.gather(*tasks_to_await)
 
 
 if __name__ == '__main__':
