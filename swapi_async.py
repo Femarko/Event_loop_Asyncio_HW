@@ -1,6 +1,7 @@
 from datetime import datetime
 from funcs import *
 from pprint import pprint
+from models import init_db, People, Session
 
 '''
 На моем Windows 10 без блока "import platform" возвращается

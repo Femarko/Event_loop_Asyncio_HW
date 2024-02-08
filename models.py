@@ -1,7 +1,6 @@
 import os
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import JSON
 
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'secret')
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'swapi')
@@ -24,7 +23,19 @@ class People(Base):
     __tablename__ = "swapi_people"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    json: Mapped[dict] = mapped_column(JSON, nullable=True)
+    name: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    birth_year: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    eye_color: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    films: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    gender: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    hair_color: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    height: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    homeworld: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    mass: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    skin_color: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    species: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    starships: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
+    vehicles: Mapped[str] = mapped_column(index=True, unique=False, nullable=False)
 
 
 async def init_db():
