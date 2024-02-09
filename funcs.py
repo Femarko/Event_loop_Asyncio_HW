@@ -49,10 +49,8 @@ async def paste_to_db(*args):
                          species=person["species"],
                          starships=person["starships"],
                          vehicles=person["vehicles"]) for person in args]
-        # session.add_all(people)
-        pprint(people)
-        print(len(people))
-        # await session.commit()
+        session.add_all(people)
+        await session.commit()
 
 
 async def create_persons_list(base_url: str, session: ClientSession, id_list) -> list:

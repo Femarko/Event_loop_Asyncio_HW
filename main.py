@@ -13,6 +13,8 @@ if platform.system()=='Windows':
 
 
 async def main():
+    await init_db()
+
     async with ClientSession() as session:
 
         persons_quantity = await get_field_value(base_url, "count", session)
@@ -29,15 +31,11 @@ async def main():
             for id_list in chunked(range(first_id, last_id), CHUNK_SIZE):
                 persons_list = await create_persons_list(base_url, session, id_list)
                 persons_count += len(persons_list)
-                print(f"{len(persons_list) = }")
-                pprint(persons_list)
-                print()
-                print()
+                asyncio.create_task(paste_to_db(*persons_list))
 
-    # asyncio.create_task(paste_to_db(*persons_list))
 
-    # tasks_to_await = asyncio.all_tasks() - {asyncio.current_task()}
-    # await asyncio.gather(*tasks_to_await)
+    tasks_to_await = asyncio.all_tasks() - {asyncio.current_task()}
+    await asyncio.gather(*tasks_to_await)
 
 
 if __name__ == '__main__':
