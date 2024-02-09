@@ -1,14 +1,14 @@
-from datetime import datetime
 from funcs import *
-from pprint import pprint
 from models import init_db, People, Session
+from more_itertools import chunked
 
 '''
 На моем Windows 10 без блока "import platform" возвращается
 "RuntimeError: Event loop is closed", даже если сам скрипт выполняется с "exit code 0"
 '''
 import platform
-if platform.system()=='Windows':
+
+if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
@@ -33,12 +33,9 @@ async def main():
                 persons_count += len(persons_list)
                 asyncio.create_task(paste_to_db(*persons_list))
 
-
     tasks_to_await = asyncio.all_tasks() - {asyncio.current_task()}
     await asyncio.gather(*tasks_to_await)
 
 
 if __name__ == '__main__':
-    start_time = datetime.now()
     asyncio.run(main())
-    print(datetime.now() - start_time)

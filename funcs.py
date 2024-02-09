@@ -1,8 +1,5 @@
-import asyncio, aiohttp, requests
-from pprint import pprint
-
+import asyncio, aiohttp
 from aiohttp import ClientSession
-from more_itertools import chunked
 from input_data import base_url, attributes_to_get, fields, CHUNK_SIZE
 from models import Session, People
 
@@ -54,8 +51,6 @@ async def paste_to_db(*args):
 
 
 async def create_persons_list(base_url: str, session: ClientSession, id_list) -> list:
-    # for id_list in chunked(range(first_id, last_id), CHUNK_SIZE):
     persons_list = await get_persons(base_url, session, id_list)
     persons_list = await get_attributes(persons_list, session)
-        # persons_list = [*persons_list, *persons_list_chunk]
     return persons_list

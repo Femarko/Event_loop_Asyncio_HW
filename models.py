@@ -14,7 +14,6 @@ engine = create_async_engine(PG_DSN)
 Session = async_sessionmaker(engine, expire_on_commit=False)
 
 
-
 class Base(AsyncAttrs, DeclarativeBase):
     pass
 
