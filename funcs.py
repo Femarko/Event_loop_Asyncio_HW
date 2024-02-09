@@ -24,7 +24,7 @@ async def get_persons(base_url: str, session: ClientSession, id_list: list) -> l
     return persons_list
 
 
-async def get_attributes(base_url: str, persons_list: list, session: ClientSession) -> list:
+async def get_attributes(persons_list: list, session: ClientSession) -> list:
     for key, value in attributes_to_get.items():
         for item in persons_list:
             # item[key] = ",".join([await get_field_value(link, value, session) for link in item[key]])
@@ -55,13 +55,9 @@ async def paste_to_db(*args):
         # await session.commit()
 
 
-async def create_persons_list(last_id: int,
-                              base_url: str,
-                              session: ClientSession,
-                              first_id: int=1,
-                              persons_list :list=None) -> list:
-    for id_list in chunked(range(first_id, last_id), CHUNK_SIZE):
-        persons_list_chunk = await get_persons(base_url, session, id_list)
-        persons_list_chunk = await get_attributes(base_url, persons_list_chunk, session)
-        persons_list = [*persons_list, *persons_list_chunk]
+async def create_persons_list(base_url: str, session: ClientSession, id_list) -> list:
+    # for id_list in chunked(range(first_id, last_id), CHUNK_SIZE):
+    persons_list = await get_persons(base_url, session, id_list)
+    persons_list = await get_attributes(persons_list, session)
+        # persons_list = [*persons_list, *persons_list_chunk]
     return persons_list
