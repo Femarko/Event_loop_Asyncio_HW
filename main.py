@@ -2,10 +2,6 @@ from funcs import *
 from models import init_db, People, Session
 from more_itertools import chunked
 
-'''
-На моем Windows 10 без блока "import platform" возвращается
-"RuntimeError: Event loop is closed", даже если сам скрипт выполняется с "exit code 0"
-'''
 import platform
 
 if platform.system() == 'Windows':
