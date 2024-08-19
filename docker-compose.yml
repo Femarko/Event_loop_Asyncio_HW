@@ -1,6 +1,16 @@
 version: "3.9"
 services:
 
+  swapi_service:
+    build: .
+    env_file:
+      - .env
+    command:
+      sh -c "python main.py"
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: postgres:14.3-alpine3.15
     env_file:
@@ -24,13 +34,3 @@ services:
         limits:
           cpus: "0.5"
           memory: 2G
-
-  swapi_service:
-    build: .
-    env_file:
-      - .env
-    command:
-      sh -c "python main.py"
-    depends_on:
-      db:
-        condition: service_healthy
