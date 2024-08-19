@@ -13,7 +13,7 @@ async def main():
 
     async with ClientSession() as session:
 
-        persons_quantity = await get_field_value(base_url, "count", session)
+        persons_quantity = await get_field_value(base_url=base_url, field="count", session=session)
         persons_list = []
         persons_count = 0
 
@@ -25,7 +25,7 @@ async def main():
                 first_id = persons_list[-1]["id"] + 1
                 last_id = first_id + persons_quantity - persons_count + 1
             for id_list in chunked(range(first_id, last_id), CHUNK_SIZE):
-                persons_list = await create_persons_list(base_url, session, id_list)
+                persons_list = await create_persons_list(base_url=base_url, session=session, id_list=id_list)
                 persons_count += len(persons_list)
                 asyncio.create_task(paste_to_db(*persons_list))
 

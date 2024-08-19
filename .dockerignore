@@ -2,5 +2,6 @@ venv/
 .env
 .gitignore
 docker-compose.yml
+docker-compose_dev.yml
 Dockerfile
 README.md
