@@ -2,42 +2,9 @@
 ## Нетология
 ### Python-разработчик с нуля
 
-## Задача:
-В этом задании мы будем выгружать из API персонажей Star Wars и загружать в базу данных.<br>
-Документация по API находится здесь: [SWAPI](https://swapi.dev/documentation#people). <br>
-Пример запроса: `https://swapi.dev/api/people/1/` <br>
-В результате запроса получаем персонажа с ID 1:
-```
-{
-    "birth_year": "19 BBY",
-    "eye_color": "Blue",
-    "films": [
-        "https://swapi.dev/api/films/1/",
-        ...
-    ],
-    "gender": "Male",
-    "hair_color": "Blond",
-    "height": "172",
-    "homeworld": "https://swapi.dev/api/planets/1/",
-    "mass": "77",
-    "name": "Luke Skywalker",
-    "skin_color": "Fair",
-    "created": "2014-12-09T13:50:51.644000Z",
-    "edited": "2014-12-10T13:52:43.172000Z",
-    "species": [
-        "https://swapi.dev/api/species/1/"
-    ],
-    "starships": [
-        "https://swapi.dev/api/starships/12/",
-        ...
-    ],
-    "url": "https://swapi.dev/api/people/1/",
-    "vehicles": [
-        "https://swapi.dev/api/vehicles/14/"
-        ...
-    ]
-}
-```
+## Задача
+Асинхронно взаимодействуя с соответствующим API ([SWAPI](https://swapi.dev/documentation#people)), получить информацию обо всех персонажах "Зведных войн" и записать информацию в базу данных.
+
 Необходимо выгрузить cледующие поля:<br>
 **id** - ID персонажа <br>
 **birth_year** <br>
@@ -53,18 +20,16 @@
 **species** - строка с названиями типов через запятую <br>
 **starships** - строка с названиями кораблей через запятую <br>
 **vehicles** - строка с названиями транспорта через запятую <br>
-Данные по каждому персонажу необходимо загрузить в любую базу данных. <br>
-Выгрузка из апи и загрузка в базу должна происходить асинхронно. <br>
 
-Результатом работы будет: <br>
-1) скрипт миграции базы данных <br>
-2) скрипт загрузки данных из API в базу <br>
-
-В базу должны быть загружены все персонажи
-
-
----
-
+## Решение
+Разработано python-приложение, асинхронно отправляющее HTTP-запросы к [SWAPI](https://swapi.dev/documentation#people) и асинхронно записывающее полученные данные в базу postgres.
+## Использованные инструменты
+python 3.10, asyncio, aiohttp, more-itertools, sqlalchemy, postgresql, pgadmin, docker, docker-compose.
+## Запуск и работа приложения
+1. Создать файл .env, где прописать переменные окружения. Образец: .env.example.
+2. `docker-compose up -d` - запуск приложения на локальном хосте
+3. [http://localhost:5051/](http://localhost:5051/) - посмотреть таблицу базы данных
+4. `docker-compose down` - остановить приложение
 # Комментарии к решению задачи
 ## Входящие данные и условия задачи:
 В модуле `input_data` собраны условия задачи и необходимые входящие данные:
